@@ -179,7 +179,7 @@ resource "aws_ecr_repository" "my_ecr_repo" {
 }
 
 # Docker image information
-locals {
+custom_block_name {
   docker_image_name = "my-angular-image"
   docker_image_tag  = "latest"
 }
