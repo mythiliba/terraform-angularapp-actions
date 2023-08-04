@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
   push:
    branches:
-   - master
+   - main
    
   pull_request:
    branches:
-   - master
+   - main
  
 env:
  # verbosity setting for Terraform logs
@@ -49,4 +49,4 @@ jobs:
        run: exit 1
  
      - name: Terraform Apply
-       run: terraform apply -auto-approve
+       run: terraform apply --auto-approve
