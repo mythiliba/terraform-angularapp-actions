@@ -178,11 +178,6 @@ resource "aws_ecr_repository" "my_ecr_repo" {
   name = "my-angular-repo"  
 }
 
-# Docker image information
-custom_block_name {
-  docker_image_name = "my-angular-image"
-  docker_image_tag  = "latest"
-}
 
 # Build and push the Docker image to ECR
 resource "aws_ecr_lifecycle_policy" "my_ecr_lifecycle" {
@@ -209,7 +204,7 @@ resource "aws_ecr_lifecycle_policy" "my_ecr_lifecycle" {
 }
 
 resource "docker_image" "my_angular_image" {
-  name          = local.docker_image_name
+  name          = myangularimage
   build         = "./docker/Dockerfile"  
   registry_auth = {
     address      = aws_ecr_repository.my_ecr_repo.repository_url
