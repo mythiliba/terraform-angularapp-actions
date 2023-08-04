@@ -164,14 +164,7 @@ resource "aws_ecs_cluster" "my_cluster" {
   name = "my-ecs-cluster"  
 }
 
-resource "aws_ecs_task_definition" "my_task_definition" {
-  family                   = "angular-task"
-  execution_role_arn       = aws_iam_role.my_task_execution.arn
-  task_role_arn            = aws_iam_role.my_task.arn
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  cpu = "256"   
-  memory = "512"  
+
   
 # Create an ECR repository to store the Docker image
 resource "aws_ecr_repository" "my_ecr_repo" {
@@ -213,7 +206,14 @@ resource "docker_image" "my_angular_image" {
   }
 }
 
-
+resource "aws_ecs_task_definition" "my_task_definition" {
+  family                   = "angular-task"
+  execution_role_arn       = aws_iam_role.my_task_execution.arn
+  task_role_arn            = aws_iam_role.my_task.arn
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu = "256"   
+  memory = "512" 
   container_definitions = <<EOF
   [
     {
