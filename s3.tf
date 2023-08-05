@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "hello-world-terraform-state"
+  bucket = "angular-app-tfstate"
 
   # Prevent accidental deletion of this S3 bucket
   lifecycle {
