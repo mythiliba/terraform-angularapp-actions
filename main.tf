@@ -175,32 +175,19 @@ resource "aws_ecs_cluster" "my_cluster" {
   name = "my-ecs-cluster"  
 }
 
-<<<<<<< HEAD
-resource "aws_ecs_task_definition" "my_task_definition" {
-  family                   = "angular-task"
-  execution_role_arn       = aws_iam_role.my_task_execution.arn
-  task_role_arn            = aws_iam_role.my_task.arn
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  cpu = "256"   
-  memory = "512"  
-=======
 
->>>>>>> 53661f94678c494258ded01763fdcfe0786ea443
-  
 # Create an ECR repository to store the Docker image
 resource "aws_ecr_repository" "my_ecr_repo" {
   name = "my-angular-repo"  
 }
 
-<<<<<<< HEAD
+
 # Docker image information
 locals {
   docker_image_name = "my-angular-image"
   docker_image_tag  = "latest"
 }
-=======
->>>>>>> 53661f94678c494258ded01763fdcfe0786ea443
+
 
 # Build and push the Docker image to ECR
 resource "aws_ecr_lifecycle_policy" "my_ecr_lifecycle" {
@@ -227,12 +214,8 @@ resource "aws_ecr_lifecycle_policy" "my_ecr_lifecycle" {
 }
 
 resource "docker_image" "my_angular_image" {
-<<<<<<< HEAD
-  name          = local.docker_image_name
-=======
   name          = myangularimage
->>>>>>> 53661f94678c494258ded01763fdcfe0786ea443
-  build         = "./docker/Dockerfile"  
+  build         = "./Dockerfile"  
   registry_auth = {
     address      = aws_ecr_repository.my_ecr_repo.repository_url
     username     = aws.get_caller_identity.current.arn
@@ -240,9 +223,7 @@ resource "docker_image" "my_angular_image" {
   }
 }
 
-<<<<<<< HEAD
 
-=======
 resource "aws_ecs_task_definition" "my_task_definition" {
   family                   = "angular-task"
   execution_role_arn       = aws_iam_role.my_task_execution.arn
@@ -250,8 +231,8 @@ resource "aws_ecs_task_definition" "my_task_definition" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu = "256"   
-  memory = "512" 
->>>>>>> 53661f94678c494258ded01763fdcfe0786ea443
+  memory = "512"  
+
   container_definitions = <<EOF
   [
     {
@@ -334,6 +315,17 @@ resource "aws_ecs_service" "my_service" {
     container_port   = 80
   }
 }
+
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "angular-app" 
+  acl    = "private"                     
+
+  tags = {
+    Name        = "My Angular Application Bucket"
+    Environment = "Development"
+  }
+}
+
 
 # Export necessary values as outputs
 output "alb_dns_name" {
