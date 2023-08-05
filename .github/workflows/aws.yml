@@ -3,12 +3,12 @@ name: "Terraform ECS deployment"
 on:
   workflow_dispatch:
   push:
-   branches:
-     -main
+    branches:
+      -main
    
   pull_request:
-   branches:
-   - main
+    branches:
+      - main
  
 env:
  # verbosity setting for Terraform logs
