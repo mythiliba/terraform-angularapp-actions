@@ -6,6 +6,13 @@ on:
   push:
     branches: [ main ]
 
+env:
+
+ # Credentials for deployment to AWS
+ AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+ AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+ AWS_DEFAULT_REGION: "us-east-2"
+ 
 jobs:
   
   build:
@@ -34,8 +41,41 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: my-angular-repo
-        IMAGE_TAG: angularimage
-
+        IMAGE_TAG: $(git rev-parse --short "$GITHUB_SHA")
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+
+ 
+    - name: Setup Terraform with specified version on the runner
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: "1.4.2"
+   
+    - name: Terraform init
+      id: init
+      run: terraform init
+   
+    - name: Terraform validate
+      id: validate
+      env:
+        TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
+      run: terraform validate
+ 
+    - name: Terraform plan
+      id: plan
+      env:
+        TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
+      run: terraform plan
+      continue-on-error: true
+ 
+    - name: Terraform Plan Status
+      if: steps.plan.outcome == 'failure'
+      run: exit 1
+ 
+    - name: Terraform Apply
+      id: apply
+      env:
+        TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
+      run: terraform apply --auto-approve

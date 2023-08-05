@@ -12,7 +12,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   container_name = "sample-angular-app2"
-  container_port = 3000
+  container_port = 80
 
   tags = {
     Name       = local.name
@@ -75,7 +75,7 @@ module "ecs_service" {
       cpu       = 512
       memory    = 1024
       essential = true
-      image     = "public.ecr.aws/aws-containers/ecsdemo-frontend:776fd50"
+      image     = var.image_name
       port_mappings = [
         {
           name          = local.container_name
