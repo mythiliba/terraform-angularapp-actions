@@ -3,6 +3,17 @@ provider "aws" {
   region = "us-east-2"  
 }
 
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "sample-application-terraform"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
+
 # Create a VPC
 resource "aws_vpc" "my_vpc" {
   cidr_block = "10.0.0.0/16"
