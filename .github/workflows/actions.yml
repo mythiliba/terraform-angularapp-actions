@@ -15,6 +15,7 @@ env:
  ECR_REPOSITORY: my-angular-repo
  IMAGE_TAG: ${{ github.run_number }}
  
+ 
 jobs:
   
   build:
@@ -63,13 +64,15 @@ jobs:
       id: validate
       env:
         TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-      run: terraform validate
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: terraform validate -var "image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
  
     - name: Terraform plan
       id: plan
       env:
         TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-      run: terraform plan
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: terraform plan -var "image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       continue-on-error: true
  
     - name: Terraform Plan Status
@@ -79,5 +82,6 @@ jobs:
     - name: Terraform Apply
       id: apply
       env:
-        TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-      run: terraform apply --auto-approve
+        TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }} 
+      run: terraform apply -var "image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" --auto-approve
