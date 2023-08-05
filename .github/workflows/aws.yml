@@ -33,7 +33,7 @@ jobs:
    
      - name: Terraform init
        id: init
-       run: terraform init
+       run: ls -al
    
      - name: Terraform validate
        id: validate
