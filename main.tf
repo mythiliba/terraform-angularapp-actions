@@ -6,12 +6,12 @@ data "aws_availability_zones" "available" {}
 
 locals {
   region = "us-east-2"
-  name   = "angular-app"
+  name   = "angular-app1"
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
-  container_name = "sample-angular"
+  container_name = "sample-angular-app1"
   container_port = 3000
 
   tags = {
