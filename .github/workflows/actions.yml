@@ -75,13 +75,6 @@ jobs:
       run: terraform plan -var "image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       continue-on-error: true
     
-    - name: Terraform state revision
-      env:
-        TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: terraform state rm aws_ecs_task_definition.this
-     
- 
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
