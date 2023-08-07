@@ -77,9 +77,7 @@ module "ecs_service" {
       memory    = 1024
       essential = true
       image     = var.image_name
-      lifecycle = {
-      prevent_destroy = true
-      }
+      
       port_mappings = [
         {
           name          = local.container_name
@@ -89,6 +87,9 @@ module "ecs_service" {
         }
       ]
 
+      lifecycle = {
+      prevent_destroy = true
+      }
       # Example image used requires access to write to root filesystem
       readonly_root_filesystem = false
 
