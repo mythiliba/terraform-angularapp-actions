@@ -11,7 +11,7 @@ env:
  # Credentials for deployment to AWS
  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
- AWS_DEFAULT_REGION: "us-east-2"
+ AWS_DEFAULT_REGION: "us-east-1"
  ECR_REPOSITORY: my-angular-repo
  IMAGE_TAG: ${{ github.run_number }}
  
@@ -34,7 +34,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
+        aws-region: us-east-1
 
     - name: Login to Amazon ECR
       id: login-ecr

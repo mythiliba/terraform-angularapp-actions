@@ -5,7 +5,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  region = "us-east-2"
+  region = "us-east-1"
   name   = "angular-app2"
 
   vpc_cidr = "10.0.0.0/16"
