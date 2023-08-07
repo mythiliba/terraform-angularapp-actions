@@ -71,15 +71,15 @@ module "ecs_service" {
       user               = "0"
     }
 
-    lifecycle = {
-      prevent_destroy = true
-    }
-
+    
     (local.container_name) = {
       cpu       = 512
       memory    = 1024
       essential = true
       image     = var.image_name
+      lifecycle = {
+      prevent_destroy = true
+      }
       port_mappings = [
         {
           name          = local.container_name
