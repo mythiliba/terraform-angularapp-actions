@@ -71,6 +71,10 @@ module "ecs_service" {
       user               = "0"
     }
 
+    lifecycle = {
+      prevent_destroy = true
+    }
+
     (local.container_name) = {
       cpu       = 512
       memory    = 1024
