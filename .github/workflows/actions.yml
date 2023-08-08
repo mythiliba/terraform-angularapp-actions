@@ -85,3 +85,7 @@ jobs:
         TF_VAR_image_name: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }} 
       run: terraform destroy -var "image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" --auto-approve
+
+    - name: Remove state 
+      id: rm 
+      run: terraform state rm aws_ecs_task_definition.this
