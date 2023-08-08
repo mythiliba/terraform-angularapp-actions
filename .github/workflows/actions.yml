@@ -88,4 +88,4 @@ jobs:
 
     - name: Remove state 
       id: rm 
-      run: terraform state rm aws_ecs_task_definition.this
+      run: terraform state list
